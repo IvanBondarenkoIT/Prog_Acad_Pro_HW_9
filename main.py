@@ -12,6 +12,8 @@
 запустить декорируемую функцию и в какой файл сохранить результаты
 хронометража. Цель - провести хронометраж декорируемой функции.
 '''
+import time
+import my_logger
 
 
 def main():
@@ -30,10 +32,12 @@ def main():
             return inner
         return decorator
 
+    @LogDecorator  # HW 9.4
     @tags('b')
     def get_text(name):
         return f'Hello {name}'
 
+    @LogDecorator  # HW 9.4
     @tags('i')
     def get_text_1(name):
         return f'Hello {name}'
@@ -48,6 +52,21 @@ def main():
     for item in func_list:
         print(item)  # HW 9.2
 
+
+# HW 9.4
+class LogDecorator:
+    def __init__(self, f):
+        self.f = f
+        self.__log_str = ''
+
+    def __call__(self, *args, **name_args):
+        self.__log_str = self.f(*args, **name_args)
+        self.add_to_log()
+        return self.__log_str
+
+    def add_to_log(self):
+        log = my_logger.MyLoger(__name__)
+        log.add_info(self.__log_str)
 
 
 if __name__ == '__main__':
