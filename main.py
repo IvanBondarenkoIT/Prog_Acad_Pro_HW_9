@@ -57,16 +57,18 @@ def main():
 class LogDecorator:
     def __init__(self, f):
         self.f = f
-        self.__log_str = ''
 
     def __call__(self, *args, **name_args):
         self.__log_str = self.f(*args, **name_args)
-        self.add_to_log()
+        self.add_to_txt()
         return self.__log_str
 
-    def add_to_log(self):
-        log = my_logger.MyLoger(__name__)
-        log.add_info(self.__log_str)
+    def add_to_txt(self):
+        file_name = 'txt.txt' # як отримати __name__ классу?
+        with open(file_name, 'a') as text_file:
+            text_file.write(f"{self.__log_str}\n")
+        # log = my_logger.MyLoger(__name__)
+        # log.add_info(self.__log_str)
 
 
 if __name__ == '__main__':
